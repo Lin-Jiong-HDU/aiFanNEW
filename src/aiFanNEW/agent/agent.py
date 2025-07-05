@@ -18,7 +18,7 @@ class mainAgent:
         self.model = ChatZhipuAI(
             model="glm-4-plus",
             temperature=0.7,
-            api_key = os.getenv("API_KEY"),  # 从环境变量中获取API密钥
+            api_key = os.getenv("API_KEY"),
         )
         self.system_message = SystemMessage(
             content="""你是一个专业的教学助手,你叫范小教，可以回答各种学科的问题。你的功能有：
@@ -28,8 +28,12 @@ class mainAgent:
             4. 以Markdown格式返回所有内容。
             """
         )
+        self.tools = [
+            web_search,
+        ]
         self.app = create_react_agent(
             self.model,
+            tools=self.tools,
             checkpointer=self.memory,
         )
 
@@ -38,3 +42,32 @@ class mainAgent:
 
     def get_app(self):
         return self.app, self.config
+    
+    def run(self, user_input):
+        """
+        运行主代理，处理用户输入并返回响应。
+        
+        参数：
+        - user_input (str): 用户输入的消息内容
+        
+        """
+
+        user_input = HumanMessage(content=user_input)
+        for token, metadata in self.app.stream(
+            {"messages": [self.system_message, user_input]},
+            config=self.config,
+            stream_mode="messages"
+        ):
+            if isinstance(token, AIMessage):    
+                print(token.content, end="")
+
+# if __name__ == "__main__":
+#     agent = mainAgent()
+#     print("欢迎使用范小教教学助手！请问有什么可以帮助您的？")
+    
+#     while True:
+#         user_input = input("您: ")
+#         if user_input.lower() in ["exit", "quit"]:
+#             print("感谢使用范小教教学助手，再见！")
+#             break
+#         agent.run(user_input)
