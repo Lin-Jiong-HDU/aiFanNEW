@@ -1,7 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+
 [project]
 name = "aifannew"
 version = "0.1.0"
-description = "Add your description here"
+description = "ai教学助手本地版"
+authors = [
+  { name="Johnlin", email="linjiong2020@outlook.com" },
+]
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -10,5 +18,9 @@ dependencies = [
     "langchain-community>=0.3.27",
     "langgraph>=0.5.1",
     "python-dotenv>=1.1.1",
+    "setuptools>=80.9.0",
     "zhipuai>=2.1.5.20250701",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]

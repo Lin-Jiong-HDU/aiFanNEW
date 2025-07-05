@@ -7,6 +7,8 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
+from aiFanNEW.tools.web_search import web_search
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -16,7 +18,7 @@ class mainAgent:
         self.model = ChatZhipuAI(
             model="glm-4-plus",
             temperature=0.7,
-            api_key = os.environ.get("ZHIPUAI_API_KEY"),  # 从环境变量中获取API密钥
+            api_key = os.getenv("API_KEY"),  # 从环境变量中获取API密钥
         )
         self.system_message = SystemMessage(
             content="""你是一个专业的教学助手,你叫范小教，可以回答各种学科的问题。你的功能有：
