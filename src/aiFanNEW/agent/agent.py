@@ -7,6 +7,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
+from aiFanNEW.workflow.testpaper_generate import generate_test_paper
 from aiFanNEW.tools.web_search import web_search
 
 from dotenv import load_dotenv
@@ -28,6 +29,7 @@ class mainAgent:
         )
         self.tools = [
             web_search,
+            generate_test_paper
         ]
         self.app = create_react_agent(
             self.model,
