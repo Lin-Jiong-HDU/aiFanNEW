@@ -60,6 +60,18 @@ class mainAgent:
         ):
             if isinstance(token, AIMessage):    
                 print(token.content, end="")
+    
+    
+    def run_stream(self, user_input):
+        """流式输出版本"""
+        user_input = HumanMessage(content=user_input)
+        for token, metadata in self.app.stream(
+            {"messages": [self.system_message, user_input]},
+            config=self.config,
+            stream_mode="messages"
+        ):
+            if isinstance(token, AIMessage):    
+                yield token.content
 
 # if __name__ == "__main__":
 #     agent = mainAgent()

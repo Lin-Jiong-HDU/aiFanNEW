@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aifannew"
-version = "0.1.6"
+version = "0.1.7"
 description = "ai教学助手本地版"
 authors = [
   { name="Johnlin", email="linjiong2020@outlook.com" },
@@ -19,6 +19,7 @@ dependencies = [
     "langgraph>=0.5.1",
     "python-dotenv>=1.1.1",
     "setuptools>=80.9.0",
+    "uvicorn>=0.35.0",
     "zhipuai>=2.1.5.20250701",
 ]
 

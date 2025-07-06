@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <div id="output"></div>
+    <script>
+        const eventSource = new EventSource('http://localhost:8002/chat');
+        
+        eventSource.onmessage = (e) => {
+            document.getElementById('output').innerHTML += e.data;
+        };
+        
+        // 发送问题（需要根据实际API调整）
+        fetch('/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({question: "如何教英语时态？"})
+        });
+    </script>
+</body>
+</html>
