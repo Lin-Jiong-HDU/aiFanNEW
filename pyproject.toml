@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "aifannew"
-version = "0.1.3"
+version = "0.1.4"
 description = "ai教学助手本地版"
 authors = [
   { name="Johnlin", email="linjiong2020@outlook.com" },
