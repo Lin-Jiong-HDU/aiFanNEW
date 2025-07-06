@@ -5,14 +5,13 @@ import os
 from dotenv import load_dotenv
 import asyncio
 from uuid import UUID
-
+from fastapi.middleware.cors import CORSMiddleware
 # 加载环境变量（确保在FastAPI初始化前执行）
 load_dotenv()
 
 app = FastAPI(title="AI教学助手API")
 
-# 添加CORS中间件（需要时安装依赖）
-from fastapi.middleware.cors import CORSMiddleware
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -20,7 +19,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 agent_list = []
-# agent = mainAgent()
+
 def get_agent(uuid: str | None = None):
     """获取当前的agent实例"""
     if uuid is None:
@@ -48,19 +47,17 @@ async def chat_endpoint(request: Request):
 
     print(f"Received question: {question} from user_id: {user_id}")
 
-    agent = get_agent(user_id)  # 获取或创建agent实例
+    agent = get_agent(user_id) 
         
-    # 创建生成器函数
+    
     async def stream_generator():
         # 直接调用agent.run并捕获输出
         response_content = []
-        for token in agent.run_stream(question):  # 需要修改agent的run方法
+        for token in agent.run_stream(question):  
             response_content.append(token)
             yield f"{token}"
-            await asyncio.sleep(0.01)  # 控制流式速度
+            await asyncio.sleep(0.01)  
             
-        # 保存完整对话到内存（根据现有MemorySaver实现）
-        # agent.memory.save_context({"input": question}, {"output": "".join(response_content)})
     
     return StreamingResponse(stream_generator(), media_type="text/event-stream")
 
