@@ -43,21 +43,25 @@ async def chat_endpoint(request: Request):
     """流式聊天接口"""
     data = await request.json()
     question = data.get("question")
-    user_id = data.get("user_id", None)
+    user_id = data.get("user_id")
 
     print(f"Received question: {question} from user_id: {user_id}")
-
-    agent = get_agent(user_id) 
+    if user_id is None or user_id == "":
+        agent = get_agent() 
+    else:
+        agent = get_agent(user_id)
         
-    
+    user_id = str(agent.thread_id)
     async def stream_generator():
         # 直接调用agent.run并捕获输出
         response_content = []
         for token in agent.run_stream(question):  
             response_content.append(token)
-            yield f"{token}"
+            yield f"event: content\ndata: {token}\n\n"
             await asyncio.sleep(0.01)  
-            
+        
+        yield f"event: user_id\ndata: {user_id}\n\n"
+
     
     return StreamingResponse(stream_generator(), media_type="text/event-stream")
 
