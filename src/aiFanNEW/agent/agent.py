@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class mainAgent:
-    def __init__(self):
+    def __init__(self, uuid: uuid.UUID | None = uuid.uuid4()):
         self.memory = MemorySaver()
         self.model = ChatZhipuAI(
             model="glm-4-plus",
@@ -37,7 +37,7 @@ class mainAgent:
             checkpointer=self.memory,
         )
 
-        self.thread_id = uuid.uuid4()
+        self.thread_id = uuid
         self.config = {"configurable": {"thread_id": self.thread_id}}
 
     def get_app(self):
