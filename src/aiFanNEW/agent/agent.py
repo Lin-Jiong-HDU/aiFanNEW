@@ -14,7 +14,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class mainAgent:
-    def __init__(self, uuid: uuid.UUID | None = uuid.uuid4()):
+    def __init__(self, uuid: uuid.UUID):
         self.memory = MemorySaver()
         self.model = ChatZhipuAI(
             model="glm-4-plus",

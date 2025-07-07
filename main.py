@@ -1,10 +1,14 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import StreamingResponse
+
 from aiFanNEW.agent.agent import mainAgent
 import os
 from dotenv import load_dotenv
 import asyncio
+
 from uuid import UUID
+import uuid as uuid_lib
+
 from fastapi.middleware.cors import CORSMiddleware
 # 加载环境变量（确保在FastAPI初始化前执行）
 load_dotenv()
@@ -23,8 +27,9 @@ agent_list = []
 def get_agent(uuid: str | None = None):
     """获取当前的agent实例"""
     if uuid is None:
-        agent = mainAgent()
-        uuid = str(agent.thread_id)
+        uuid = str(uuid_lib.uuid4())
+        agent = mainAgent(uuid=UUID(uuid))
+        # uuid = str(agent.thread_id)
         agent_list.append([uuid,agent])
         return agent
     else:
